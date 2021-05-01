@@ -3,10 +3,17 @@ package com.church.manager.model.dto;
 public class TokenDTO {
 	private String login;
 	private String token;
-
-	public TokenDTO(String login, String token) {
+	private boolean isAdmin;
+	
+	public TokenDTO(String login, String token, boolean isAdmin) {
+		super();
 		this.login = login;
 		this.token = token;
+		this.isAdmin = isAdmin;
+	}
+	
+	public TokenDTO() {
+		super();
 	}
 
 	public String getLogin() {
@@ -23,5 +30,13 @@ public class TokenDTO {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 }
