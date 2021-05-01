@@ -34,7 +34,7 @@ public class AuthController {
 			User user = new User(credentialsDTO.getLogin(), credentialsDTO.getPassword());
 			User userAutheticated = this.userService.authenticate(user);
 			String token = this.jwtService.generatedToken(userAutheticated);
-			return ResponseEntity.ok(new TokenDTO(user.getLogin(), token, user.isAdmin()));
+			return ResponseEntity.ok(new TokenDTO(userAutheticated.getLogin(), token, userAutheticated.isAdmin()));
 
 		} catch (UsernameNotFoundException | PasswordInvalid e) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
