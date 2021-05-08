@@ -1,7 +1,11 @@
 package com.church.manager.model;
 
+import java.io.Serializable;
+
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,9 +14,17 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+
 @Entity
 @Table(name = "user_user")
-public class User {
+public class User implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
@@ -21,8 +33,9 @@ public class User {
 	private boolean isAdmin;
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="church_id", referencedColumnName = "id")
+	@JsonBackReference
 	private Church church;
-	
+
 	public User(Long id, String login, String password, boolean isAdmin, Church church) {
 		super();
 		this.id = id;
@@ -31,7 +44,7 @@ public class User {
 		this.isAdmin = isAdmin;
 		this.church = church;
 	}
-	
+
 	public User(String login, String password) {
 		super();
 		this.login = login;
@@ -72,5 +85,5 @@ public class User {
 	public void setChurch(Church church) {
 		this.church = church;
 	}
-	
+
 }
