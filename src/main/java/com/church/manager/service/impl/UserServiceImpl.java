@@ -21,14 +21,15 @@ public class UserServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 		Optional<User> user = this.userRepository.findByLogin(login);
-		if (user == null) {
+
+		if (!user.isPresent()) {
 			throw new UsernameNotFoundException("Usuário não encontrado");
 		}
 
@@ -41,6 +42,9 @@ public class UserServiceImpl implements UserDetailsService {
 
 	public User authenticate(User user) throws PasswordInvalid {
 		Optional<User> u = this.userRepository.findByLogin(user.getLogin());
+		if (!u.isPresent()) {
+			throw new UsernameNotFoundException("Usuário não encontrado");
+		}
 		if (passwordEncoder.matches(user.getPassword(), u.get().getPassword())) {
 			return u.get();
 		}
