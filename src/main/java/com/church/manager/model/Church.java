@@ -1,18 +1,26 @@
 package com.church.manager.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class, 
+		property = "id")
 public class Church implements Serializable{
 	/**
 	 * 
@@ -32,31 +40,27 @@ public class Church implements Serializable{
 	private String responsible;
 	private String numberOfTithers;
 
+	@OneToMany(mappedBy = "church")
+	@JsonBackReference
+	private List<Christian> christians;
+
 	@OneToOne(mappedBy = "church", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private User user;
 
 
-
-	public Church(Long id, String name, String phone, String email, String city, String district, String street,
-			String number, String responsible, String numberOfTithers, User user) {
+	public Church() {
 		super();
-		this.id = id;
-		this.name = name;
-		this.phone = phone;
-		this.email = email;
-		this.city = city;
-		this.district = district;
-		this.street = street;
-		this.number = number;
-		this.responsible = responsible;
-		this.numberOfTithers = numberOfTithers;
-		this.user = user;
 	}
 
 
-	public Church() {
-		super();
+	public List<Christian> getChristians() {
+		return christians;
+	}
+
+
+	public void setChristians(List<Christian> christians) {
+		this.christians = christians;
 	}
 
 

@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.church.manager.model.Church;
+import com.church.manager.model.Christian;
 
 @Repository
-public interface ChurchRepository extends JpaRepository<Church, Long> {
-	@Query(value = "SELECT * FROM Church c WHERE c.id != ?1", nativeQuery = true)
-	List<Church> findAll(Long id);
+public interface ChristianRepository extends JpaRepository<Christian, Long>{
+	
+	@Query(value = "SELECT * FROM Christian c WHERE c.church_id = :id", nativeQuery = true)
+	List<Christian> findAll(Long id);
 }

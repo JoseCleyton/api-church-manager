@@ -21,8 +21,8 @@ public class ChurchServiceImpl implements ChurchService{
 	}
 
 	@Override
-	public List<Church> findAll() {
-		return (List<Church>) this.churchRepository.findAll();
+	public List<Church> findAll(Long id) {
+		return (List<Church>) this.churchRepository.findAll(id);
 	}
 
 	@Override
