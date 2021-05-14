@@ -37,6 +37,12 @@ public class ChristianController {
 		return this.christianService.findAll(user.get().getChurch().getId());
 	}
 
+	@GetMapping(path = "/quantity")
+	public Long findQuantity(Principal principal){
+		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
+		return this.christianService.getQuantity(user.get().getChurch().getId());
+	}
+
 	@GetMapping(path = "{id}")
 	public Christian findBtId(@PathVariable(name="id") Long id) throws NotFoundException{
 		return this.christianService.findById(id).orElseThrow(NotFoundException::new);
@@ -55,7 +61,7 @@ public class ChristianController {
 		christian.setChurch(user.get().getChurch());
 		return this.christianService.update(christian);
 	}
-	
+
 	@DeleteMapping(path = "{id}")
 	public ResponseEntity<Boolean> delete(@PathVariable(name="id") Long id) {
 		this.christianService.delete(id);

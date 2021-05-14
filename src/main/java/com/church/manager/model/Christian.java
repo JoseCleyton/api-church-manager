@@ -38,7 +38,7 @@ public class Christian implements Serializable{
 	private Address address;
 
 	@ManyToOne
-	@JoinColumn(name="church_id")
+	@JoinColumn(name="church_id", referencedColumnName = "id")
 	@JsonBackReference
 	private Church church;
 
@@ -134,11 +134,5 @@ public class Christian implements Serializable{
 		this.birthDate = birthDate;
 	}
 
-
-	@Override
-	public String toString() {
-		return "Christian [id=" + id + ", name=" + name + ", address=" + address + ", church=" + church + ", phone="
-				+ phone + ", email=" + email + ", birthDate=" + birthDate + "]";
-	}
 
 }

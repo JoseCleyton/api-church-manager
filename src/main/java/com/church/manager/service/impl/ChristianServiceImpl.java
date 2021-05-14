@@ -41,4 +41,9 @@ public class ChristianServiceImpl implements ChristianService{
 
 	}
 
+	@Override
+	public Long getQuantity(Long idChurch) {
+		return this.christianRepository.getQuantity(idChurch);
+	}
+
 }
