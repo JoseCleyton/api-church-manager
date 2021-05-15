@@ -3,11 +3,9 @@ package com.church.manager.controller;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,13 +36,14 @@ public class ChurchController {
 	private PasswordEncoder passwordEncoder;
 
 	@GetMapping
-	public ResponseEntity<List<Church>> findAll(Principal principal){
+	public List<Church> findAllByIsAdm(Principal principal){
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
-		return ResponseEntity.ok(
-				this.churchService.findAll()
-				.stream()
-				.filter(church -> church.getId() != user.get().getChurch().getId())
-				.collect(Collectors.toList()));
+		return this.churchService.findAllByAdm(user.get().getChurch().getId());
+	}
+
+	@GetMapping(path = "/all")
+	public List<Church> findAll(){
+		return this.churchService.findAll();
 	}
 
 	@GetMapping(path = "/{id}")
