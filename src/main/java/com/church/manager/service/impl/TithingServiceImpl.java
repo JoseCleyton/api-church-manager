@@ -32,4 +32,9 @@ public class TithingServiceImpl implements TithingService{
 		return this.tithingRepository.total(idChurch);
 	}
 
+	@Override
+	public List<Tithing> fetchLatestRecords(Long idChurch) {
+		return this.tithingRepository.fetchLatestRecords(idChurch);
+	}
+
 }

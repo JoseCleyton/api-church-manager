@@ -29,10 +29,11 @@ public class Christian implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	@NotNull
 	private String name;
+
 	@OneToOne(mappedBy = "christian", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private Address address;
@@ -63,7 +64,6 @@ public class Christian implements Serializable{
 	public Christian() {
 		super();
 	}
-
 
 	public Long getId() {
 		return id;

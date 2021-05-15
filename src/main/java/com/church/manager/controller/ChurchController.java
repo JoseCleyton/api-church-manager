@@ -36,10 +36,14 @@ public class ChurchController {
 	private PasswordEncoder passwordEncoder;
 
 	@GetMapping
-	public ResponseEntity<List<Church>> findAll(Principal principal){
+	public List<Church> findAllByIsAdm(Principal principal){
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
-		return ResponseEntity.ok(
-				this.churchService.findAll(user.get().getChurch().getId()));
+		return this.churchService.findAllByAdm(user.get().getChurch().getId());
+	}
+
+	@GetMapping(path = "/all")
+	public List<Church> findAll(){
+		return this.churchService.findAll();
 	}
 
 	@GetMapping(path = "/{id}")

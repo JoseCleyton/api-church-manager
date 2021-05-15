@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,13 +31,17 @@ public class TithingController {
 	@Autowired
 	private UserServiceImpl userServiceImpl;
 
-	@GetMapping
-	public List<Tithing> findAll(Principal principal, @RequestParam(value = "dateStart", required = true) String dateStart, @RequestParam(value = "dateEnd", required = true) String dateEnd) throws ParseException {
-		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
+	@GetMapping(path = "/{id}")
+	public List<Tithing> findAll(Principal principal, @PathVariable(name = "id") Long id, @RequestParam(value = "dateStart", required = true) String dateStart, @RequestParam(value = "dateEnd", required = true) String dateEnd) throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date dateStartFomatter = formatter.parse(dateStart);
 		Date dateEndFomatter = formatter.parse(dateEnd);
-		return this.tithingService.findAll(user.get().getChurch().getId(), dateStartFomatter, dateEndFomatter);
+		return this.tithingService.findAll(id, dateStartFomatter, dateEndFomatter);
+	}
+	@GetMapping(path = "/latest-records")
+	public List<Tithing> fetchLatestRecords(Principal principal) {
+		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
+		return this.tithingService.fetchLatestRecords(user.get().getChurch().getId());
 	}
 
 	@GetMapping(path = "/total")

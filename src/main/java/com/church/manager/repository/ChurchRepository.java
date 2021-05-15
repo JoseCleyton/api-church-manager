@@ -10,6 +10,9 @@ import com.church.manager.model.Church;
 
 @Repository
 public interface ChurchRepository extends JpaRepository<Church, Long> {
+	@Query(value = "SELECT * FROM Church c", nativeQuery = true)
+	List<Church> findAll();
+	
 	@Query(value = "SELECT * FROM Church c WHERE c.id != ?1", nativeQuery = true)
-	List<Church> findAll(Long id);
+	List<Church> findAllByAdm(Long id);
 }

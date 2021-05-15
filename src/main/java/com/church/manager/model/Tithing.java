@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,15 +25,15 @@ public class Tithing implements Serializable{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	private double value;
-	
-	@OneToOne
+
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="christian_id", referencedColumnName = "id")
 	private Christian christian;
-	
+
 	@OneToOne
 	@JoinColumn(name="church_id", referencedColumnName = "id")
 	private Church church;
-	
+
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
@@ -88,5 +89,5 @@ public class Tithing implements Serializable{
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+
 }
