@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests().antMatchers("/church/**").hasRole("ADMIN")
+		.antMatchers("/christian").hasRole("USER")
 		.antMatchers(HttpMethod.POST, "/auth/**")
 		.permitAll().anyRequest().authenticated().and().sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

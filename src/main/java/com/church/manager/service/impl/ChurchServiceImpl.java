@@ -14,7 +14,7 @@ import com.church.manager.service.ChurchService;
 public class ChurchServiceImpl implements ChurchService{
 	@Autowired
 	private ChurchRepository churchRepository;
-	
+
 	@Override
 	public Church save(Church church) {
 		return this.churchRepository.save(church);
@@ -22,19 +22,23 @@ public class ChurchServiceImpl implements ChurchService{
 
 	@Override
 	public List<Church> findAll() {
-		return (List<Church>) this.churchRepository.findAll();
+		return this.churchRepository.findAll();
 	}
-
+	
+	@Override
+	public List<Church> findAllByAdm(Long id) {
+		return (List<Church>) this.churchRepository.findAllByAdm(id);
+	}
 	@Override
 	public Optional<Church> findById(Long id) {
 		return this.churchRepository.findById(id);
 	}
-	
+
 	@Override
 	public Long findQuantity() {
 		return this.churchRepository.count();
 	}
-	
+
 	@Override
 	public Church update(Church church) {
 		return this.churchRepository.save(church);
@@ -42,9 +46,8 @@ public class ChurchServiceImpl implements ChurchService{
 
 	@Override
 	public void delete(Long id) {
-		 this.churchRepository.deleteById(id);;
+		this.churchRepository.deleteById(id);;
 	}
-
 
 
 }
