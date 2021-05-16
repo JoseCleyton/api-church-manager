@@ -32,12 +32,22 @@ public class TithingController {
 	private UserServiceImpl userServiceImpl;
 
 	@GetMapping(path = "/{id}")
-	public List<Tithing> findAll(Principal principal, @PathVariable(name = "id") Long id, @RequestParam(value = "dateStart", required = true) String dateStart, @RequestParam(value = "dateEnd", required = true) String dateEnd) throws ParseException {
+	public List<Tithing> findAllByAdm(@PathVariable(name = "id") Long id, @RequestParam(value = "dateStart", required = true) String dateStart, @RequestParam(value = "dateEnd", required = true) String dateEnd) throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date dateStartFomatter = formatter.parse(dateStart);
 		Date dateEndFomatter = formatter.parse(dateEnd);
 		return this.tithingService.findAll(id, dateStartFomatter, dateEndFomatter);
 	}
+
+	@GetMapping
+	public List<Tithing> findAll(Principal principal, @RequestParam(value = "dateStart", required = true) String dateStart, @RequestParam(value = "dateEnd", required = true) String dateEnd) throws ParseException {
+		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateStartFomatter = formatter.parse(dateStart);
+		Date dateEndFomatter = formatter.parse(dateEnd);
+		return this.tithingService.findAll(user.get().getChurch().getId(), dateStartFomatter, dateEndFomatter);
+	}
+
 	@GetMapping(path = "/latest-records")
 	public List<Tithing> fetchLatestRecords(Principal principal) {
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
@@ -49,6 +59,16 @@ public class TithingController {
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
 		double total = 0;
 		Optional<Double> opTotal = this.tithingService.total(user.get().getChurch().getId());
+		if(opTotal.isPresent()) {
+			total = (double) opTotal.get();
+		}
+		return total;
+	}
+
+	@GetMapping(path = "/total/{id}")
+	public Double totalByChurch(@PathVariable(name = "id") Long id) {		
+		double total = 0;
+		Optional<Double> opTotal = this.tithingService.total(id);
 		if(opTotal.isPresent()) {
 			total = (double) opTotal.get();
 		}
