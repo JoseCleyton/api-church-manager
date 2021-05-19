@@ -3,6 +3,7 @@ package com.church.manager.controller;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -57,8 +58,23 @@ public class TithingController {
 	@GetMapping(path = "/total")
 	public Double total(Principal principal) {
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
+
+		LocalDate localDate = LocalDate.now();
+		int year = localDate.getYear();
+		int month = localDate.getMonthValue();
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateStartFomatter = null;
+		Date dateEndFomatter = null;
+		try {
+			dateStartFomatter = formatter.parse(year + "-" + month + "-01");
+			dateEndFomatter = formatter.parse(year + "-" + month + "-31");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
 		double total = 0;
-		Optional<Double> opTotal = this.tithingService.total(user.get().getChurch().getId());
+		Optional<Double> opTotal = this.tithingService.total(user.get().getChurch().getId(), dateStartFomatter, dateEndFomatter);
 		if(opTotal.isPresent()) {
 			total = (double) opTotal.get();
 		}
@@ -66,9 +82,23 @@ public class TithingController {
 	}
 
 	@GetMapping(path = "/total/{id}")
-	public Double totalByChurch(@PathVariable(name = "id") Long id) {		
+	public Double totalByChurch(@PathVariable(name = "id") Long id) throws ParseException {
+		LocalDate localDate = LocalDate.now();
+		int year = localDate.getYear();
+		int month = localDate.getMonthValue();
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateStartFomatter = null;
+		Date dateEndFomatter = null;
+		try {
+			dateStartFomatter = formatter.parse(year + "-" + month + "-01");
+			dateEndFomatter = formatter.parse(year + "-" + month + "-31");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
 		double total = 0;
-		Optional<Double> opTotal = this.tithingService.total(id);
+		Optional<Double> opTotal = this.tithingService.total(id, dateStartFomatter, dateEndFomatter);
 		if(opTotal.isPresent()) {
 			total = (double) opTotal.get();
 		}

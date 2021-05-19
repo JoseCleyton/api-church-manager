@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.church.manager.model.Christian;
@@ -21,8 +23,8 @@ public class ChristianServiceImpl implements ChristianService{
 	}
 
 	@Override
-	public List<Christian> findAll(Long id) {
-		return this.christianRepository.findAll(id);
+	public Page<Christian> findAll(Long id, Pageable pageable) {
+		return this.christianRepository.findAll(id, pageable);
 	}
 
 	@Override

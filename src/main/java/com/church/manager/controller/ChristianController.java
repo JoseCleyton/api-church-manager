@@ -1,10 +1,11 @@
 package com.church.manager.controller;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,9 +33,9 @@ public class ChristianController {
 	private UserServiceImpl userServiceImpl;
 
 	@GetMapping
-	public List<Christian> findAll(Principal principal){
+	public Page<Christian> findAll(Principal principal, Pageable pageable){
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
-		return this.christianService.findAll(user.get().getChurch().getId());
+		return this.christianService.findAll(user.get().getChurch().getId(), pageable);
 	}
 
 	@GetMapping(path = "/quantity")

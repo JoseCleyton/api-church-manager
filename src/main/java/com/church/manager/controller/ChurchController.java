@@ -1,10 +1,11 @@
 package com.church.manager.controller;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,14 +37,14 @@ public class ChurchController {
 	private PasswordEncoder passwordEncoder;
 
 	@GetMapping
-	public List<Church> findAllByIsAdm(Principal principal){
+	public Page<Church> findAllByIsAdm(Principal principal, Pageable pageable){
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
-		return this.churchService.findAllByAdm(user.get().getChurch().getId());
+		return this.churchService.findAllByAdm(user.get().getChurch().getId(), pageable);
 	}
 
 	@GetMapping(path = "/all")
-	public List<Church> findAll(){
-		return this.churchService.findAll();
+	public Page<Church> findAll(Pageable pageable){
+		return this.churchService.findAll(pageable);
 	}
 
 	@GetMapping(path = "/{id}")
