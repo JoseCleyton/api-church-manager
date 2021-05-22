@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.church.manager.exception.NotFoundException;
@@ -33,9 +34,12 @@ public class ChristianController {
 	private UserServiceImpl userServiceImpl;
 
 	@GetMapping
-	public Page<Christian> findAll(Principal principal, Pageable pageable){
+	public Page<Christian> findAll(@RequestParam(name = "name", required = false, defaultValue = "") String name, @RequestParam(name = "monthOfBirthday", required = false) Integer monthOfBirthday, Principal principal, Pageable pageable){
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
-		return this.christianService.findAll(user.get().getChurch().getId(), pageable);
+		if(monthOfBirthday == 0) {
+			return this.christianService.findAll(user.get().getChurch().getId(), name, pageable);
+		}
+		return this.christianService.findAll(user.get().getChurch().getId(), name, monthOfBirthday, pageable);
 	}
 
 	@GetMapping(path = "/quantity")

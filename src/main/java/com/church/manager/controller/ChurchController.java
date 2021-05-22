@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.church.manager.exception.NotFoundException;
@@ -37,9 +38,9 @@ public class ChurchController {
 	private PasswordEncoder passwordEncoder;
 
 	@GetMapping
-	public Page<Church> findAllByIsAdm(Principal principal, Pageable pageable){
+	public Page<Church> findAllByIsAdm(@RequestParam(value = "name", required = false, defaultValue = "") String name, Principal principal, Pageable pageable){
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
-		return this.churchService.findAllByAdm(user.get().getChurch().getId(), pageable);
+		return this.churchService.findAllByAdm(user.get().getChurch().getId(),name, pageable);
 	}
 
 	@GetMapping(path = "/all")

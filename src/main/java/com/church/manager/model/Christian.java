@@ -1,6 +1,7 @@
 package com.church.manager.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -45,11 +48,11 @@ public class Christian implements Serializable{
 
 	private String phone;
 	private String email;
-	private String birthDate;
 
+	@Temporal(TemporalType.DATE)
+	private Date birthDate;
 
-	public Christian(Long id, String name, Address address, Church church, String phone, String email,
-			String birthDate) {
+	public Christian(Long id, String name, Address address, Church church, String phone, String email, Date birthDate) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -60,9 +63,16 @@ public class Christian implements Serializable{
 		this.birthDate = birthDate;
 	}
 
-
 	public Christian() {
 		super();
+	}
+
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	public Long getId() {
@@ -122,16 +132,6 @@ public class Christian implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-
-	public String getBirthDate() {
-		return birthDate;
-	}
-
-
-	public void setBirthDate(String birthDate) {
-		this.birthDate = birthDate;
 	}
 
 

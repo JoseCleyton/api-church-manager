@@ -13,6 +13,6 @@ public interface ChurchRepository extends JpaRepository<Church, Long> {
 	@Query(value = "SELECT * FROM Church c", nativeQuery = true)
 	Page<Church> findAll(Pageable pageable);
 
-	@Query(value = "SELECT * FROM Church c WHERE c.id != ?1", nativeQuery = true)
-	Page<Church> findAllByAdm(Long id, Pageable pageable);
+	@Query(value = "SELECT * FROM Church c WHERE c.id != :id and c.name LIKE %:name%", nativeQuery = true)
+	Page<Church> findAllByAdm(Long id, String name, Pageable pageable);
 }

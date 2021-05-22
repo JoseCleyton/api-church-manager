@@ -10,7 +10,7 @@ import com.church.manager.model.Church;
 public interface ChurchService {
 	Church save(Church church);
 	Page<Church> findAll(Pageable pageable);
-	Page<Church> findAllByAdm(Long id, Pageable pageable);
+	Page<Church> findAllByAdm(Long id, String name, Pageable pageable);
 	Optional<Church> findById(Long id);
 	Long findQuantity();
 	Church update(Church church);

@@ -33,7 +33,7 @@ public class AuthController {
 		try {
 			User user = new User(credentialsDTO.getLogin(), credentialsDTO.getPassword());
 			User userAutheticated = this.userService.authenticate(user);
-			String token = this.jwtService.generatedToken(userAutheticated);
+			String token = this.jwtService.generatedTokenWithExpirationSendEmail(userAutheticated.getLogin(), "1440");
 			return ResponseEntity.ok(new TokenDTO(userAutheticated.getLogin(), token, userAutheticated.isAdmin()));
 
 		} catch (UsernameNotFoundException | PasswordInvalid e) {

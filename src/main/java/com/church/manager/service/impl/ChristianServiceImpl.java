@@ -1,6 +1,5 @@
 package com.church.manager.service.impl;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +22,15 @@ public class ChristianServiceImpl implements ChristianService{
 	}
 
 	@Override
-	public Page<Christian> findAll(Long id, Pageable pageable) {
-		return this.christianRepository.findAll(id, pageable);
+	public Page<Christian> findAll(Long id, String name, int monthOfBirthday, Pageable pageable) {
+		return this.christianRepository.findAll(id, name, monthOfBirthday, pageable);
 	}
 
+	@Override
+	public Page<Christian> findAll(Long id, String name, Pageable pageable) {
+		return this.christianRepository.findAll(id, name, pageable);
+	}
+	
 	@Override
 	public Optional<Christian> findById(Long id) {
 		return this.christianRepository.findById(id);

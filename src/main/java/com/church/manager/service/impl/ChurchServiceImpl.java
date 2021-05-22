@@ -27,8 +27,8 @@ public class ChurchServiceImpl implements ChurchService{
 	}
 	
 	@Override
-	public Page<Church> findAllByAdm(Long id, Pageable pageable) {
-		return this.churchRepository.findAllByAdm(id, pageable);
+	public Page<Church> findAllByAdm(Long id, String name, Pageable pageable) {
+		return this.churchRepository.findAllByAdm(id, name, pageable);
 	}
 	@Override
 	public Optional<Church> findById(Long id) {
