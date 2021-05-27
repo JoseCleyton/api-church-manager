@@ -28,8 +28,8 @@ public class TithingServiceImpl implements TithingService{
 	}
 
 	@Override
-	public Optional<Double> total(Long idChurch) {
-		return this.tithingRepository.total(idChurch);
+	public Optional<Double> total(Long idChurch, Date dateStart, Date dateEnd) {
+		return this.tithingRepository.total(idChurch, dateStart, dateEnd);
 	}
 
 	@Override

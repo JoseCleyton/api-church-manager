@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.church.manager.model.Christian;
@@ -21,10 +23,15 @@ public class ChristianServiceImpl implements ChristianService{
 	}
 
 	@Override
-	public List<Christian> findAll(Long id) {
-		return this.christianRepository.findAll(id);
+	public Page<Christian> findAll(Long idChurch, String name, int monthOfBirthday, Pageable pageable) {
+		return this.christianRepository.findAll(idChurch, name, monthOfBirthday, pageable);
 	}
 
+	@Override
+	public Page<Christian> findAll(Long idChurch, String name, Pageable pageable) {
+		return this.christianRepository.findAll(idChurch, name, pageable);
+	}
+	
 	@Override
 	public Optional<Christian> findById(Long id) {
 		return this.christianRepository.findById(id);
@@ -44,6 +51,11 @@ public class ChristianServiceImpl implements ChristianService{
 	@Override
 	public Long getQuantity(Long idChurch) {
 		return this.christianRepository.getQuantity(idChurch);
+	}
+
+	@Override
+	public List<Christian> retrieve(Long idChurch) {
+		return this.christianRepository.retrieve(idChurch);
 	}
 
 }
