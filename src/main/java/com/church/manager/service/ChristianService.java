@@ -3,11 +3,16 @@ package com.church.manager.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+
 import com.church.manager.model.Christian;
 
 public interface ChristianService {
 	Christian save(Christian christian);
-	List<Christian> findAll(Long id);
+	Page<Christian> findAll(Long idChurch, String name, int monthOfBirthday, Pageable pageable);
+	Page<Christian> findAll(Long iidChurchd, String name, Pageable pageable);
+	List<Christian> retrieve(Long idChurch);
 	Long getQuantity(Long idChurch);
 	Optional<Christian> findById(Long id);
 	Christian update(Christian christian);

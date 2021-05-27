@@ -1,9 +1,10 @@
 package com.church.manager.service.impl;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.church.manager.model.Church;
@@ -21,13 +22,13 @@ public class ChurchServiceImpl implements ChurchService{
 	}
 
 	@Override
-	public List<Church> findAll() {
-		return this.churchRepository.findAll();
+	public Page<Church> findAll(Pageable pageable) {
+		return this.churchRepository.findAll(pageable);
 	}
 	
 	@Override
-	public List<Church> findAllByAdm(Long id) {
-		return (List<Church>) this.churchRepository.findAllByAdm(id);
+	public Page<Church> findAllByAdm(Long id, String name, Pageable pageable) {
+		return this.churchRepository.findAllByAdm(id, name, pageable);
 	}
 	@Override
 	public Optional<Church> findById(Long id) {

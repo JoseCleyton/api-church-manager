@@ -41,7 +41,6 @@ public class JwtService {
 	}
 
 	public Optional<Boolean> tokenIsValid(String token) {
-
 		try {
 			Claims claims = getClaims(token).get();
 			Date dataExpiracao = claims.getExpiration();
