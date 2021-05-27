@@ -1,6 +1,7 @@
 package com.church.manager.controller;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,12 @@ public class ChristianController {
 		return this.christianService.findAll(user.get().getChurch().getId(), name, monthOfBirthday, pageable);
 	}
 
+	@GetMapping(path = "retrieve")
+	public List<Christian> retrieve(Principal principal, Pageable pageable){
+		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
+		return this.christianService.retrieve(user.get().getChurch().getId());
+	}
+	
 	@GetMapping(path = "/quantity")
 	public Long findQuantity(Principal principal){
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
