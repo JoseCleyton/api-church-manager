@@ -1,5 +1,6 @@
 package com.church.manager.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class ChurchServiceImpl implements ChurchService{
 	}
 
 	@Override
-	public Page<Church> findAll(Pageable pageable) {
-		return this.churchRepository.findAll(pageable);
+	public List<Church> findAll() {
+		return this.churchRepository.findAll();
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package com.church.manager.controller;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,8 @@ public class ChurchController {
 	}
 
 	@GetMapping(path = "/all")
-	public Page<Church> findAll(Pageable pageable){
-		return this.churchService.findAll(pageable);
+	public List<Church> findAll(){
+		return this.churchService.findAll();
 	}
 
 	@GetMapping(path = "/{id}")

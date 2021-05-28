@@ -22,6 +22,7 @@ import com.church.manager.exception.NotFoundException;
 import com.church.manager.model.Christian;
 import com.church.manager.model.User;
 import com.church.manager.service.ChristianService;
+import com.church.manager.service.ChurchService;
 import com.church.manager.service.impl.UserServiceImpl;
 
 @RestController
@@ -30,6 +31,9 @@ public class ChristianController {
 
 	@Autowired
 	private ChristianService christianService;
+
+	@Autowired
+	private ChurchService churchService;
 
 	@Autowired
 	private UserServiceImpl userServiceImpl;
@@ -48,7 +52,7 @@ public class ChristianController {
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
 		return this.christianService.retrieve(user.get().getChurch().getId());
 	}
-	
+
 	@GetMapping(path = "/quantity")
 	public Long findQuantity(Principal principal){
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
@@ -64,6 +68,10 @@ public class ChristianController {
 	public Christian save(Principal principal, @RequestBody Christian christian) {
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
 		christian.setChurch(user.get().getChurch());
+		Long quantity = this.christianService.getQuantity(user.get().getChurch().getId());
+		quantity = quantity+1;
+		user.get().getChurch().setNumberOfTithers(quantity.toString());
+		this.churchService.update(user.get().getChurch());
 		return this.christianService.save(christian);
 	}
 
