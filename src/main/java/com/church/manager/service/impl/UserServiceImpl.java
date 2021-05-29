@@ -71,4 +71,8 @@ public class UserServiceImpl implements UserDetailsService {
 				.findFirst();
 
 	}
+
+	public Optional<User> findById(Long id) {
+		return this.userRepository.findById(id);
+	}
 }

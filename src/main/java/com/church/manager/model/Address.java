@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -20,7 +21,8 @@ public class Address implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name="address_seq", sequenceName="address_id_seq")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="address_seq")
 	private Long id;
 	
 	@OneToOne
