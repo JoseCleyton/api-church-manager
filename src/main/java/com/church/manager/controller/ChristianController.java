@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.church.manager.exception.NotFoundException;
 import com.church.manager.model.Christian;
@@ -60,8 +62,13 @@ public class ChristianController {
 	}
 
 	@GetMapping(path = "{id}")
-	public Christian findBtId(@PathVariable(name="id") Long id) throws NotFoundException{
-		return this.christianService.findById(id).orElseThrow(NotFoundException::new);
+	public Christian findBtId(@PathVariable(name="id") Long id, Principal principal) throws NotFoundException{
+		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
+		Optional<Christian> christian =this.christianService.findById(id, user.get().getChurch().getId());
+		if(christian.isPresent()) {
+			return christian.get();
+		}
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum Registro Encontrado");
 	}
 
 	@PostMapping

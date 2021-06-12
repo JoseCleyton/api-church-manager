@@ -33,8 +33,8 @@ public class ChristianServiceImpl implements ChristianService{
 	}
 	
 	@Override
-	public Optional<Christian> findById(Long id) {
-		return this.christianRepository.findById(id);
+	public Optional<Christian> findById(Long id, Long idChurch) {
+		return this.christianRepository.findById(id, idChurch);
 	}
 
 	@Override
