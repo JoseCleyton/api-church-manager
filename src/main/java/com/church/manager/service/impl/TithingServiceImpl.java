@@ -33,8 +33,18 @@ public class TithingServiceImpl implements TithingService{
 	}
 
 	@Override
-	public List<Tithing> fetchLatestRecords(Long idChurch) {
-		return this.tithingRepository.fetchLatestRecords(idChurch);
+	public List<Tithing> fetchLatestRecords() {
+		return this.tithingRepository.fetchLatestRecords();
+	}
+	
+	@Override
+	public List<Tithing> fetchLatestRecordsByUser(Long idChurch) {
+		return this.tithingRepository.fetchLatestRecordsByUser(idChurch);
+	}
+	
+	@Override
+	public Optional<Double> retrieveTotal(Date dateStart, Date dateEnd) {
+		return this.tithingRepository.retrieveTotal(dateStart, dateEnd);
 	}
 
 }

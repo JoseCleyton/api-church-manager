@@ -16,18 +16,18 @@ import com.church.manager.model.Christian;
 @Repository
 public interface ChristianRepository extends JpaRepository<Christian, Long>{
 
-	@Query(value = "SELECT * FROM Christian c WHERE c.church_id = :id and c.name LIKE %:name% and extract(month from c.birth_date) = :monthOfBirthday", nativeQuery = true)
+	@Query(value = "SELECT * FROM christian c WHERE c.church_id = :id and c.name LIKE %:name% and extract(month from c.birth_date) = :monthOfBirthday", nativeQuery = true)
 	Page<Christian> findAll(Long id, String name, int monthOfBirthday, Pageable pageable);
 
-	@Query(value = "SELECT * FROM Christian c WHERE c.church_id = :id and c.name LIKE %:name%", nativeQuery = true)
+	@Query(value = "SELECT * FROM christian c WHERE c.church_id = :id and c.name LIKE %:name%", nativeQuery = true)
 	Page<Christian> findAll(Long id, String name, Pageable pageable);
 	
-	@Query(value = "SELECT * FROM Christian c WHERE c.church_id = :idChurch and c.id = :id", nativeQuery = true)
+	@Query(value = "SELECT * FROM christian c WHERE c.church_id = :idChurch and c.id = :id", nativeQuery = true)
 	Optional<Christian> findById(Long id, Long idChurch);
 
-	@Query(value = "SELECT * FROM Christian c WHERE c.church_id = :id", nativeQuery = true)
+	@Query(value = "SELECT * FROM christian c WHERE c.church_id = :id", nativeQuery = true)
 	List<Christian> retrieve(Long id);
 
-	@Query(value="SELECT COUNT(id) FROM Christian c WHERE c.church_id = :idChurch", nativeQuery = true)
+	@Query(value="SELECT COUNT(id) FROM christian c WHERE c.church_id = :idChurch", nativeQuery = true)
 	Long getQuantity(Long idChurch);
 }

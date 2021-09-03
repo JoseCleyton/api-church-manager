@@ -10,6 +10,6 @@ import com.church.manager.model.Church;
 
 @Repository
 public interface ChurchRepository extends JpaRepository<Church, Long> {
-	@Query(value = "SELECT * FROM Church c WHERE c.id != :id and c.name LIKE %:name%", nativeQuery = true)
+	@Query(value = "SELECT * FROM church c WHERE c.id != :id and c.name LIKE %:name%", nativeQuery = true)
 	Page<Church> findAllByAdm(Long id, String name, Pageable pageable);
 }

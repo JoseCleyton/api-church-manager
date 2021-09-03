@@ -52,57 +52,49 @@ public class TithingController {
 	@GetMapping(path = "/latest-records")
 	public List<Tithing> fetchLatestRecords(Principal principal) {
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
-		return this.tithingService.fetchLatestRecords(user.get().getChurch().getId());
+		List<Tithing> tithings = null;
+		if(user.get().isAdmin()) {
+			tithings = this.tithingService.fetchLatestRecords();
+		}else {
+			tithings = this.tithingService.fetchLatestRecordsByUser(user.get().getChurch().getId());
+		}
+		return tithings;
+	}
+
+	@GetMapping(path = "/total/retrieve")
+	public Double totalRetrieve(Principal principal) {
+		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
+		Date dateStartFomatter = this.getDate("-01");
+		Date dateEndFomatter = this.getDate("-31");
+		return this.getTotal(user.get().getChurch().getId(), dateStartFomatter, dateEndFomatter);
 	}
 
 	@GetMapping(path = "/total")
 	public Double total(Principal principal) {
 		Optional<User> user = this.userServiceImpl.getUserByLogin(principal.getName());
-
-		LocalDate localDate = LocalDate.now();
-		int year = localDate.getYear();
-		int month = localDate.getMonthValue();
-
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date dateStartFomatter = null;
-		Date dateEndFomatter = null;
-		try {
-			dateStartFomatter = formatter.parse(year + "-" + month + "-01");
-			dateEndFomatter = formatter.parse(year + "-" + month + "-31");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
 		double total = 0;
-		Optional<Double> opTotal = this.tithingService.total(user.get().getChurch().getId(), dateStartFomatter, dateEndFomatter);
-		if(opTotal.isPresent()) {
-			total = (double) opTotal.get();
+		Date dateStartFomatter = this.getDate("-01");
+		Date dateEndFomatter = this.getDate("-31");
+		if(user.get().isAdmin()) {
+			total = this.getTotal(null, dateStartFomatter, dateEndFomatter);
+			//			opTotal = this.tithingService.retrieveTotal(dateStartFomatter, dateEndFomatter);
+		}else {
+			total = this.getTotal(user.get().getChurch().getId(), dateStartFomatter, dateEndFomatter);
+			//			opTotal = this.tithingService.total(user.get().getChurch().getId(), dateStartFomatter, dateEndFomatter);
 		}
 		return total;
 	}
 
 	@GetMapping(path = "/total/{id}")
 	public Double totalByChurch(@PathVariable(name = "id") Long id) throws ParseException {
-		LocalDate localDate = LocalDate.now();
-		int year = localDate.getYear();
-		int month = localDate.getMonthValue();
-
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date dateStartFomatter = null;
-		Date dateEndFomatter = null;
-		try {
-			dateStartFomatter = formatter.parse(year + "-" + month + "-01");
-			dateEndFomatter = formatter.parse(year + "-" + month + "-31");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		double total = 0;
-		Optional<Double> opTotal = this.tithingService.total(id, dateStartFomatter, dateEndFomatter);
-		if(opTotal.isPresent()) {
-			total = (double) opTotal.get();
-		}
-		return total;
+		Date dateStartFomatter = this.getDate("-01");
+		Date dateEndFomatter = this.getDate("-31");
+		//		double total = 0;
+		//		Optional<Double> opTotal = this.tithingService.total(id, dateStartFomatter, dateEndFomatter);
+		//		if(opTotal.isPresent()) {
+		//			total = (double) opTotal.get();
+		//		}
+		return this.getTotal(id, dateStartFomatter, dateEndFomatter);
 	}
 
 	@PostMapping
@@ -111,6 +103,36 @@ public class TithingController {
 		tithing.setChurch(user.get().getChurch());
 		tithing.setDate(new Date());
 		return this.tithingService.save(tithing);
+	}
+
+	private Date getDate(String day) {
+		LocalDate localDate = LocalDate.now();
+		int year = localDate.getYear();
+		int month = localDate.getMonthValue();
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateStartFomatter = null;
+		try {
+			dateStartFomatter = formatter.parse(year + "-" + month + day);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return dateStartFomatter;
+	}
+
+	private double getTotal(Long id, Date dateStartFomatter, Date dateEndFomatter) {
+		double total = 0;
+		Optional<Double> opTotal = null;
+		if(id != null) {
+			opTotal = this.tithingService.total(id, dateStartFomatter, dateEndFomatter);
+		}else {
+			opTotal = this.tithingService.retrieveTotal(dateStartFomatter, dateEndFomatter);
+		}
+		if(opTotal.isPresent()) {
+			total = (double) opTotal.get();
+		}
+		return total;
 	}
 
 }

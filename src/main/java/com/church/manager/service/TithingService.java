@@ -9,8 +9,10 @@ import com.church.manager.model.Tithing;
 
 public interface TithingService {
 	List<Tithing> findAll(Long idChurch, Date dateStart, Date dateEnd);
-	List<Tithing> fetchLatestRecords(Long idChurch);
+	List<Tithing> fetchLatestRecords();
+	List<Tithing> fetchLatestRecordsByUser(Long idChurch);
 	Tithing save(Tithing tithing);
 	Optional<Double> total(Long idChurch, Date dateStart, Date dateEnd);
+	Optional<Double> retrieveTotal(Date dateStart, Date dateEnd);
 	
 }

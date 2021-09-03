@@ -12,12 +12,18 @@ import com.church.manager.model.Tithing;
 
 @Repository
 public interface TithingRepository extends JpaRepository<Tithing, Long>{
-	@Query(value="SELECT * FROM Tithing t WHERE t.church_id = :idChurch AND t.date BETWEEN :dateStart AND :dateEnd", nativeQuery = true)
+	@Query(value="SELECT * FROM tithing t WHERE t.church_id = :idChurch AND t.date BETWEEN :dateStart AND :dateEnd", nativeQuery = true)
 	List<Tithing> findAll(Long idChurch, Date dateStart, Date dateEnd);
-	
-	@Query(value="SELECT * FROM Tithing t WHERE t.church_id = :idChurch ORDER BY id LIMIT 5", nativeQuery = true)
-	List<Tithing> fetchLatestRecords(Long idChurch);
-	
-	@Query(value="SELECT SUM(value) FROM Tithing t WHERE t.church_id = :idChurch AND t.date BETWEEN :dateStart AND :dateEnd", nativeQuery = true)
+
+	@Query(value="SELECT * FROM tithing t ORDER BY t.date LIMIT 5", nativeQuery = true)
+	List<Tithing> fetchLatestRecords();
+
+	@Query(value="SELECT * FROM tithing t WHERE t.church_id = :idChurch ORDER BY t.date LIMIT 5", nativeQuery = true)
+	List<Tithing> fetchLatestRecordsByUser(Long idChurch);
+
+	@Query(value="SELECT SUM(value) FROM tithing t WHERE t.church_id = :idChurch AND t.date BETWEEN :dateStart AND :dateEnd", nativeQuery = true)
 	Optional<Double> total(Long idChurch, Date dateStart, Date dateEnd);
+
+	@Query(value="SELECT SUM(value) FROM tithing t WHERE t.date BETWEEN :dateStart AND :dateEnd", nativeQuery = true)
+	Optional<Double> retrieveTotal(Date dateStart, Date dateEnd);
 }
